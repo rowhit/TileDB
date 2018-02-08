@@ -24,21 +24,20 @@ install:
         scripts/install-clangformat.sh;
       fi
 
+    # Set up arguments for install-deps.sh
+    - deps_args=""
+      if [[ "$USE_HDFS" == "ON" ]]; then
+        deps_args="${deps_args} --enable-hdfs"
+      fi
+      if [[ "$USE_S3" == "ON" ]]; then
+        deps_args="${deps_args} --enable-s3"
+      fi
+
     # Install library dependencies
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        sudo scripts/install-deps.sh;
+        sudo scripts/install-deps.sh $deps_args;
       else
-        scripts/install-deps.sh;
-      fi
-
-    # Install hadoop if HDFS is enabled
-    - if [[ "$USE_HDFS" == "ON" ]]; then
-        source scripts/install-hadoop.sh;
-      fi
-
-    # Install minio if S3 is enabled
-    - if [[ "$USE_S3" == "ON" ]]; then
-        source scripts/install-s3.sh && source scripts/install-minio.sh;
+        scripts/install-deps.sh $deps_args;
       fi
 
     - mkdir -p $TRAVIS_BUILD_DIR/build && cd $TRAVIS_BUILD_DIR/build
