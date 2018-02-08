@@ -28,7 +28,7 @@ install:
     - deps_args="";
       if [[ "$USE_HDFS" == "ON" ]]; then
         deps_args="${deps_args} --enable-hdfs";
-      fi
+      fi;
       if [[ "$USE_S3" == "ON" ]]; then
         deps_args="${deps_args} --enable-s3";
       fi
